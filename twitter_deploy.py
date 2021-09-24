@@ -52,21 +52,23 @@ def job():
         before_context=context
 
     if context=="":
-        print("No changes")
-        api.update_status(random.random())
+        # print("No changes")
+        # api.update_status(random.random())
+        api.update_status("if分の方",context)
+
     else:
         #ツイートの実行
-        api.update_status(random.random())
+        # api.update_status(random.random())
         # print("Yes changes")
-        # api.update_status(context)
+        api.update_status("else分の方",context)
         #print(context)
 
 
 
 def main():
-    # schedule.every(1).minutes.do(job)
-    schedule.every(10).seconds.do(job)
-    # schedule.every(2).hours.do(job)
+    # schedule.every(5).minutes.do(job)
+    # schedule.every(10).seconds.do(job)
+    schedule.every(3).hours.do(job)
 
     while True:
         schedule.run_pending()
