@@ -52,7 +52,7 @@ def job():
 
     if context=="":
         print("No changes")
-        api.update_status("No changes")
+        # api.update_status("No changes")
     else:
         #ツイートの実行
         api.update_status(context)
@@ -61,7 +61,7 @@ def job():
 
 
 def main():
-    schedule.every(1).minutes.do(job)
+    schedule.every(5).minutes.do(job)
 
     while True:
         schedule.run_pending()
