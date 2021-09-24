@@ -66,8 +66,8 @@ def main():
     schedule.every(1).minutes.do(job)
 
     while True:
-    schedule.run_pending()
-    sleep(1)
+        schedule.run_pending()
+        sleep(1)
 
 
 if __name__ == '__main__':
