@@ -6,6 +6,7 @@ import tweepy
 import schedule
 from time import sleep
 import re
+import random
 
 def job():
     # ここに取得したキーを書く
@@ -52,16 +53,20 @@ def job():
 
     if context=="":
         print("No changes")
-        # api.update_status("No changes")
+        api.update_status(random.random())
     else:
         #ツイートの実行
-        api.update_status(context)
+        api.update_status(random.random())
+        # print("Yes changes")
+        # api.update_status(context)
         #print(context)
 
 
 
 def main():
-    schedule.every(5).minutes.do(job)
+    # schedule.every(1).minutes.do(job)
+    schedule.every(10).seconds.do(job)
+    # schedule.every(2).hours.do(job)
 
     while True:
         schedule.run_pending()
