@@ -1,9 +1,7 @@
 import json
 import requests
-import urllib.parse
 import opendata_api_key
 import config
-from pprint import pprint
 import tweepy
 import schedule
 from time import sleep
