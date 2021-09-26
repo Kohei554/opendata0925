@@ -1,0 +1,1 @@
+heroku api keyをリモートに設定する

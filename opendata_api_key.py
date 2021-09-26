@@ -1,2 +1,0 @@
-API_KEY="05a05f8d55726d64deedb1ee266f112b5a853c5b180f9d58642832765c2e3f17"
-#https://api-tokyochallenge.odpt.org/api/v4/odpt:TrainTimetable?acl:consumerKey=05a05f8d55726d64deedb1ee266f112b5a853c5b180f9d58642832765c2e3f17
