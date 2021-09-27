@@ -9,6 +9,9 @@ from time import sleep
 import re
 import random
 
+total=""
+num=0
+
 def job():
 
     load_dotenv(verbose=True)
@@ -41,8 +44,8 @@ def job():
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_TOKEN)
     auth.set_access_token(ACCESS_KEY, ACCESS_TOKEN)
     api = tweepy.API(auth)
-    print(api_key)
-    print(CONSUMER_KEY)
+    # print(api_key)
+    # print(CONSUMER_KEY)
 
 
     #tweet内容のopendataのjsonデータをから取り出し
@@ -54,10 +57,11 @@ def job():
     url = requests.get(train_url)
     text = url.text
     #print(text)
-
+    global total
+    global num
+    total_context=""
     context=""
     before_context=""
-
 
     #before_before_context=""
 
@@ -69,29 +73,35 @@ def job():
             context += data[i]['owl:sameAs'] + '  ' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
             
         if (len(context) > 140 ):
-            
-            #api.update_status(before_context)
+            api.update_status(before_context)
             context=""
+
         before_context=context
 
     if context=="":
-        # print("No changes")
-        api.update_status("if",random.random())
+        print("No changes")
+        # api.update_status("if",random.random())
         # api.update_status("if分の方",context)
+
+    elif total == total_context:
+        num+=1
+        api.update_status(str(num)+"以前の遅延状態が継続しています")
+
 
     else:
         #ツイートの実行
-        api.update_status("else",random.random())
+        # api.update_status("else",random.random())
         # print("Yes changes")
-        # api.update_status("else分の方",context)
+        api.update_status(context)
         #print(context)
 
+    total=total_context
 
 
 def main():
     # schedule.every(5).minutes.do(job)
-    schedule.every(1).seconds.do(job)
-    # schedule.every(3).hours.do(job)
+    # schedule.every(1).seconds.do(job)
+    schedule.every(5).hours.do(job)
 
     while True:
         schedule.run_pending()
