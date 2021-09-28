@@ -97,7 +97,7 @@ def job():
         print("No changes")
         # print(total_context)
         # api.update_status("if分の方",context)
-        api.update_status("else",random.random())
+        # api.update_status("else",random.random())
 
     #以前の投稿と同じ内容か判断
     # elif total == total_context:
@@ -115,8 +115,8 @@ def job():
 
 def main():
     # schedule.every(5).minutes.do(job)
-    schedule.every(1).seconds.do(job)
-    # schedule.every(5).hours.do(job)
+    # schedule.every(1).seconds.do(job)
+    schedule.every(3).hours.do(job)
 
     while True:
         schedule.run_pending()
