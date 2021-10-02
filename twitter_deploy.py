@@ -50,6 +50,8 @@ def job():
         moji='odpt.TrainInformation:'+l
         dic[moji]=data_raiilway[i]['dc:title']
     # print(dic)
+    lack_dic={'odpt.TrainInformation:Keikyu':"京急線", 'odpt.TrainInformation:Keio':"京王線・井の頭線", 'odpt.TrainInformation:Seibu':"西武鉄道各線", 'odpt.TrainInformation:Keisei':"京成線"}
+    dic.update(lack_dic)
 
 
 
@@ -77,7 +79,7 @@ def job():
 
         before_context=context
         
-        if (21 < len(data[i]['odpt:trainInformationText']['ja'])):
+        if (25 < len(data[i]['odpt:trainInformationText']['ja'])):
             if data[i]['owl:sameAs'] in dic:
                 context += dic[data[i]['owl:sameAs']] + '  ' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
                 # total_context += dic[data[i]['owl:sameAs']] + '  ' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
@@ -114,9 +116,9 @@ def job():
 
 
 def main():
-    # schedule.every(5).minutes.do(job)
+    schedule.every(10).minutes.do(job)
     # schedule.every(1).seconds.do(job)
-    schedule.every(3).hours.do(job)
+    # schedule.every(3).hours.do(job)
 
     while True:
         schedule.run_pending()
