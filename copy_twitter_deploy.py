@@ -114,49 +114,10 @@ def job():
     #     num+=1
     #     api_JA.update_status(str(num)+"以前の遅延状態が継続しています")
 
-    #以下を追加、herokuがファイルにアクセスできるか確認、出来たら削除
-        try:
-            f = open('./num.txt', mode='r')
-            last_tweet_num = f.read()
-            f.close()
-            last_tweet_num = str(int(last_tweet_num)+1)
-            f = open('./num.txt', mode='w')
-            f.write(last_tweet_num)
-            f.close()
-            api_JA.update_status(last_tweet_num)         
-                
-
-        except FileNotFoundError:
-            f = open('./num.txt', mode='w+')
-            f.write("1")
-            f.close()
-            api_JA.update_status("1回")
-
-
     else:
         # print(total_context)
         #ツイートの実行
         # api_JA.update_status("else",random.random())
-
-        #以下を追加、herokuがファイルにアクセスできるか確認、出来たら削除
-        try:
-            f = open('./num.txt', mode='r')
-            last_tweet_num = f.read()
-            f.close()
-            last_tweet_num = str(int(last_tweet_num)+1)
-            f = open('./num.txt', mode='w')
-            f.write(last_tweet_num)
-            f.close()
-            api_JA.update_status(last_tweet_num)         
-                
-
-        except FileNotFoundError:
-            f = open('./num.txt', mode='w+')
-            f.write("1")
-            f.close()
-            api_JA.update_status("1回")
-
-
         api_JA.update_status(context)
 
     # total=total_context

@@ -1,3 +1,5 @@
+"""このプログラムではランダムに生成した数字の文字列をfileに保存できるかを検証しています"""
+
 import json
 import requests
 import tweepy
@@ -74,33 +76,66 @@ def job():
     total_context=""
     context=""
     before_context=""
-
     #before_before_context=""
 
     data = json.loads(text)
+    
+    
+    #最後にtweetした内容を取得
+    last_tweet=""
+    last_tweet_num="" #同じtweetの回数を数え、0,1,2...と増やす、また、文字列で登録
+    try:
+        f = open('./test.txt', mode='r')
+        last_tweet = f.read()
+        f.close()
 
+    except FileNotFoundError:
+        check_before_tweet=1
+    
+    print(last_tweet)
+    
+    #tweet処理
     for i in range(len(data)):
 
         if (len(context) > 140 ):
+            #以下のif文で最後に投稿した内容の確認
+            print("check_before_tweet==0")
+            if last_tweet==before_context:
+                print("last_tweet==before_context")
+                try:
+                    print("try")
+                    f = open('./num.txt', mode='r')
+                    last_tweet_num = f.read()
+                    f.close()
+                    last_tweet_num = str(int(last_tweet_num)+1)
+                    f = open('./num.txt', mode='w')
+                    f.write(last_tweet_num)
+                    f.close()
+                    api_JA.update_status(last_tweet_num+"回：最後に投稿した内容と同じ状況です")
+                        
+
+                except FileNotFoundError:
+                    print("except FileNotFoundError:")
+                    f = open('./num.txt', mode='w+')
+                    last_tweet = f.write("1")
+                    f.close()
+
             api_JA.update_status(before_context)
+            f = open('./test.txt', mode='w+')
+            f.write(before_context)
+            f.close()
             context=""
 
         before_context=context
-        
-        if (25 < len(data[i]['odpt:trainInformationText']['ja'])):
-            if data[i]['owl:sameAs'] in dic:
-                context += dic[data[i]['owl:sameAs']] + '：' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
-                # total_context += dic[data[i]['owl:sameAs']] + '  ' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
-            else:
-                context += data[i]['owl:sameAs'] + '：' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
-                # total_context += data[i]['owl:sameAs'] + '  ' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
 
-        #total_contextに追加しているのは以前と内容が同じか判断するため
+        context="8\n9\n7\n0\n3\n"
+
+
+        #以下がcheck_before_tweet==1にほとんど1になる設定
+        if (int(random.random()*10)==5):
+            context+=str(int(random.random()*10))+"\n"
         else:
-            if data[i]['owl:sameAs'] in dic:
-                total_context += dic[data[i]['owl:sameAs']] + '：' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
-            else:
-                total_context += data[i]['owl:sameAs'] + '：' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
+            pass
 
 
     if context=="":
@@ -114,62 +149,27 @@ def job():
     #     num+=1
     #     api_JA.update_status(str(num)+"以前の遅延状態が継続しています")
 
-    #以下を追加、herokuがファイルにアクセスできるか確認、出来たら削除
-        try:
-            f = open('./num.txt', mode='r')
-            last_tweet_num = f.read()
-            f.close()
-            last_tweet_num = str(int(last_tweet_num)+1)
-            f = open('./num.txt', mode='w')
-            f.write(last_tweet_num)
-            f.close()
-            api_JA.update_status(last_tweet_num)         
-                
-
-        except FileNotFoundError:
-            f = open('./num.txt', mode='w+')
-            f.write("1")
-            f.close()
-            api_JA.update_status("1回")
-
-
     else:
         # print(total_context)
         #ツイートの実行
         # api_JA.update_status("else",random.random())
-
-        #以下を追加、herokuがファイルにアクセスできるか確認、出来たら削除
-        try:
-            f = open('./num.txt', mode='r')
-            last_tweet_num = f.read()
-            f.close()
-            last_tweet_num = str(int(last_tweet_num)+1)
-            f = open('./num.txt', mode='w')
-            f.write(last_tweet_num)
-            f.close()
-            api_JA.update_status(last_tweet_num)         
-                
-
-        except FileNotFoundError:
-            f = open('./num.txt', mode='w+')
-            f.write("1")
-            f.close()
-            api_JA.update_status("1回")
-
-
         api_JA.update_status(context)
+        f = open('./test.txt', mode='w+')
+        f.write(context)
+        f.close()
 
     # total=total_context
 
 
 def main():
-    schedule.every(10).minutes.do(job)
+    job()
+    # schedule.every(10).minutes.do(job)
     # schedule.every(1).seconds.do(job)
     # schedule.every(3).hours.do(job)
 
-    while True:
-        schedule.run_pending()
-        sleep(1)
+    # while True:
+    #     schedule.run_pending()
+    #     sleep(1)
 
 
 if __name__ == '__main__':

@@ -79,11 +79,51 @@ def job():
 
     data = json.loads(text)
 
+#最後にtweetした内容を取得
+    last_tweet=""
+    last_tweet_num="" #同じtweetの回数を数え、0,1,2...と増やす、また、文字列で登録
+    try:
+        f = open('./test.txt', mode='r')
+        last_tweet = f.read()
+        f.close()
+
+    except FileNotFoundError:
+        pass
+    
+    print(last_tweet)
+    
+    #tweet処理
     for i in range(len(data)):
 
         if (len(context) > 140 ):
-            api_JA.update_status(before_context)
-            context=""
+        #以下のif文で最後に投稿した内容の確認
+            if last_tweet==before_context:
+                try:
+                    f = open('./num.txt', mode='r')
+                    last_tweet_num = f.read()
+                    f.close()
+                    last_tweet_num = str(int(last_tweet_num)+1)
+                    f = open('./num.txt', mode='w')
+                    f.write(last_tweet_num)
+                    f.close()
+                    api_JA.update_status(last_tweet_num+"回：以前に投稿した最後のtweet内容と同じ状況です")         
+                    print(last_tweet_num+"回：以前に投稿した最後のtweet内容と同じ状況です")                      
+               
+
+                except FileNotFoundError:
+                    f = open('./num.txt', mode='w+')
+                    last_tweet = f.write("1")
+                    f.close()
+                    api_JA.update_status("1回：最後に投稿した内容と同じ状況です")
+                    print("1回：最後に投稿した内容と同じ状況です")
+
+            else:
+                api_JA.update_status(before_context)
+                f = open('./test.txt', mode='w+')
+                f.write(before_context)
+                f.close()
+                context=""
+                print(before_context)
 
         before_context=context
         
@@ -114,57 +154,44 @@ def job():
     #     num+=1
     #     api_JA.update_status(str(num)+"以前の遅延状態が継続しています")
 
-    #以下を追加、herokuがファイルにアクセスできるか確認、出来たら削除
-        try:
-            f = open('./num.txt', mode='r')
-            last_tweet_num = f.read()
-            f.close()
-            last_tweet_num = str(int(last_tweet_num)+1)
-            f = open('./num.txt', mode='w')
-            f.write(last_tweet_num)
-            f.close()
-            api_JA.update_status(last_tweet_num)         
-                
-
-        except FileNotFoundError:
-            f = open('./num.txt', mode='w+')
-            f.write("1")
-            f.close()
-            api_JA.update_status("1回")
-
-
     else:
         # print(total_context)
         #ツイートの実行
         # api_JA.update_status("else",random.random())
+        if last_tweet==before_context:
+            try:
+                f = open('./num.txt', mode='r')
+                last_tweet_num = f.read()
+                f.close()
+                last_tweet_num = str(int(last_tweet_num)+1)
+                f = open('./num.txt', mode='w')
+                f.write(last_tweet_num)
+                f.close()
+                api_JA.update_status(last_tweet_num+"回：以前に投稿した最後のtweet内容と同じ状況です")  
+                print(last_tweet_num+"回：以前に投稿した最後のtweet内容と同じ状況です")                      
 
-        #以下を追加、herokuがファイルにアクセスできるか確認、出来たら削除
-        try:
-            f = open('./num.txt', mode='r')
-            last_tweet_num = f.read()
+            except FileNotFoundError:
+                print("except FileNotFoundError:")
+                f = open('./num.txt', mode='w+')
+                last_tweet = f.write("1")
+                f.close()
+                api_JA.update_status("1回：最後に投稿した内容と同じ状況です")
+                print("1回：最後に投稿した内容と同じ状況です")
+
+        else:
+            api_JA.update_status(context)
+            print(context)
+            f = open('./test.txt', mode='w+')
+            f.write(context)
             f.close()
-            last_tweet_num = str(int(last_tweet_num)+1)
-            f = open('./num.txt', mode='w')
-            f.write(last_tweet_num)
-            f.close()
-            api_JA.update_status(last_tweet_num)         
-                
 
-        except FileNotFoundError:
-            f = open('./num.txt', mode='w+')
-            f.write("1")
-            f.close()
-            api_JA.update_status("1回")
-
-
-        api_JA.update_status(context)
 
     # total=total_context
 
 
 def main():
-    schedule.every(10).minutes.do(job)
-    # schedule.every(1).seconds.do(job)
+    # schedule.every(10).minutes.do(job)
+    schedule.every(10).seconds.do(job)
     # schedule.every(3).hours.do(job)
 
     while True:

@@ -74,16 +74,55 @@ def job():
     total_context=""
     context=""
     before_context=""
-
     #before_before_context=""
 
     data = json.loads(text)
+    
+    
+    #最後にtweetした内容を取得
+    check_before_tweet=0 #check_before_tweet=0の時にのみ比較
+    last_tweet=""
+    last_tweet_num="" #同じtweetの回数を数え、0,1,2...と増やす、また、文字列で登録
+    try:
+        f = open('./test.txt', mode='r')
+        last_tweet = f.read()
+        f.close()
 
+    except FileNotFoundError:
+        check_before_tweet=1
+    
+    print(last_tweet)
+    
+    #tweet処理
     for i in range(len(data)):
 
         if (len(context) > 140 ):
-            api_JA.update_status(before_context)
-            context=""
+            #以下のif文で最後に投稿した内容の確認
+            if check_before_tweet==0:
+                if last_tweet==before_context:
+                    try:
+                        f = open('./num.txt', mode='r')
+                        last_tweet_num = f.read()
+                        f.close()
+                        last_tweet_num = int(last_tweet_num)+1
+                        f = open('./num.txt', mode='w')
+                        f.write(str(last_tweet_num))
+                        f.close()
+                        api_JA.update_status(last_tweet_num,"回：最後に投稿した内容と同じ状況です")
+                        
+
+                    except FileNotFoundError:
+                        f = open('./num.txt', mode='w+')
+                        last_tweet = f.write("1")
+                        f.close()
+                check_before_tweet=1
+                
+            else:
+                api_JA.update_status(before_context)
+                f = open('./test.txt', mode='w+')
+                f.write(before_context)
+                f.close()
+                context=""
 
         before_context=context
         
@@ -114,62 +153,27 @@ def job():
     #     num+=1
     #     api_JA.update_status(str(num)+"以前の遅延状態が継続しています")
 
-    #以下を追加、herokuがファイルにアクセスできるか確認、出来たら削除
-        try:
-            f = open('./num.txt', mode='r')
-            last_tweet_num = f.read()
-            f.close()
-            last_tweet_num = str(int(last_tweet_num)+1)
-            f = open('./num.txt', mode='w')
-            f.write(last_tweet_num)
-            f.close()
-            api_JA.update_status(last_tweet_num)         
-                
-
-        except FileNotFoundError:
-            f = open('./num.txt', mode='w+')
-            f.write("1")
-            f.close()
-            api_JA.update_status("1回")
-
-
     else:
         # print(total_context)
         #ツイートの実行
         # api_JA.update_status("else",random.random())
-
-        #以下を追加、herokuがファイルにアクセスできるか確認、出来たら削除
-        try:
-            f = open('./num.txt', mode='r')
-            last_tweet_num = f.read()
-            f.close()
-            last_tweet_num = str(int(last_tweet_num)+1)
-            f = open('./num.txt', mode='w')
-            f.write(last_tweet_num)
-            f.close()
-            api_JA.update_status(last_tweet_num)         
-                
-
-        except FileNotFoundError:
-            f = open('./num.txt', mode='w+')
-            f.write("1")
-            f.close()
-            api_JA.update_status("1回")
-
-
         api_JA.update_status(context)
+        f = open('./test.txt', mode='w+')
+        f.write(context)
+        f.close()
 
     # total=total_context
 
 
 def main():
-    schedule.every(10).minutes.do(job)
+    job()
+    # schedule.every(10).minutes.do(job)
     # schedule.every(1).seconds.do(job)
     # schedule.every(3).hours.do(job)
 
-    while True:
-        schedule.run_pending()
-        sleep(1)
+    # while True:
+    #     schedule.run_pending()
+    #     sleep(1)
 
 
 if __name__ == '__main__':
