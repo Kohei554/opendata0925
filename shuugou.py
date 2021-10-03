@@ -81,24 +81,40 @@ def job():
 
 #最後にtweetした内容を取得
     before_tweet=set()
-    last_tweet=""
+    last_line=""
+    last_before_line=""
     last_tweet_num="" #同じtweetの回数を数え、0,1,2...と増やす、また、文字列で登録
     try:
-        f = open('./test.txt', mode='r')
+        f = open('./test.txt', mode='r',encoding="utf-8")
         while True:
             line=f.readline()
             if line:
-                
-                last_tweet += line
+                if len(last_line)>140:
+                    before_tweet.add(last_before_line)
+                    last_line = ""
+                last_before_line=last_line
+                last_line+=line
+
             else:
+                if last_line=="" and last_before_line=="":
+                    pass
+
+                elif last_line=="":
+                    if not last_before_line in before_tweet:
+                        before_tweet.add(last_before_line)
+
+                elif len(last_line)>140:
+                    before_tweet.add(last_before_line)
+                    if not last_line=="" or last_line=="\n":
+                        before_tweet.add(last_line)
+                else:
+                    before_tweet.add(last_line)
                 break
         f.close()
 
     except FileNotFoundError:
         pass
-    
-    print(last_tweet)
-    
+        
     #tweet処理
     for i in range(len(data)):
 

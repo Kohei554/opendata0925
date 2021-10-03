@@ -117,7 +117,7 @@ def job():
                 except FileNotFoundError:
                     print("except FileNotFoundError:")
                     f = open('./num.txt', mode='w+')
-                    last_tweet = f.write("1")
+                    f.write("1")
                     f.close()
 
             api_JA.update_status(before_context)

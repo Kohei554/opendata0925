@@ -68,21 +68,75 @@ def job():
     train_url = http+str(api_key)
     url = requests.get(train_url)
     text = url.text
-    #print(text)
-    #global total
-    #global num
     total_context=""
     context=""
     before_context=""
 
-    #before_before_context=""
 
     data = json.loads(text)
 
+
+    #test.txtから140字で以前tweetした内容を保存
+    before_tweet=set()
+    last_line=""
+    last_before_line=""
+    try:
+        f = open('./test.txt', mode='r')
+        while True:
+            line=f.readline()
+            if line:
+                if len(last_line)>140:
+                    before_tweet.add(last_before_line)
+                    last_line = ""
+                last_before_line=last_line
+                last_line+=line
+
+            else:
+                if last_line=="" and last_before_line=="":
+                    pass
+                #多分下のelifはいらない->elifの処理は一切行われないはず
+                elif last_line=="":
+                    if not last_before_line in before_tweet:
+                        before_tweet.add(last_before_line)
+
+                #多分下のelifはいらない->elifの処理は一切行われないはず
+                elif len(last_line)>140:
+                    before_tweet.add(last_before_line)
+                    if not last_line=="" or last_line=="\n":
+                        before_tweet.add(last_line)
+                else:
+                    before_tweet.add(last_line)
+                break
+        f.close()
+        print(before_tweet)
+        for i in range(len(before_tweet)):
+            print(len(before_tweet.pop()))
+
+    except FileNotFoundError:
+        pass
+
+    #test.txtの初期化、リセット
+    f = open('./test.txt', mode='w+')
+    f.write("")
+    f.close()
+
+    
+    #データの取り出し
     for i in range(len(data)):
 
         if (len(context) > 140 ):
-            api_JA.update_status(before_context)
+            #もし、以前tweetした内容と同じ場合はifでかき消されるので、num.txtの利用などで工夫して回数追加を必要がある
+            if before_context in before_tweet:
+                print("same_content")
+            else:
+                try:
+                    with open('./test.txt', mode='a+') as f:
+                        f.write(before_context)
+                        api_JA.update_status(before_context)
+                    
+
+                except FileNotFoundError:
+                    print("test.txtが存在しない、一度コード内の上部で生成しているため、errorはないはず")
             context=""
 
         before_context=context
@@ -114,57 +168,29 @@ def job():
     #     num+=1
     #     api_JA.update_status(str(num)+"以前の遅延状態が継続しています")
 
-    #以下を追加、herokuがファイルにアクセスできるか確認、出来たら削除
-        try:
-            f = open('./num.txt', mode='r')
-            last_tweet_num = f.read()
-            f.close()
-            last_tweet_num = str(int(last_tweet_num)+1)
-            f = open('./num.txt', mode='w')
-            f.write(last_tweet_num)
-            f.close()
-            api_JA.update_status(last_tweet_num)         
-                
-
-        except FileNotFoundError:
-            f = open('./num.txt', mode='w+')
-            f.write("1")
-            f.close()
-            api_JA.update_status("1回")
-
-
     else:
         # print(total_context)
         #ツイートの実行
         # api_JA.update_status("else",random.random())
 
-        #以下を追加、herokuがファイルにアクセスできるか確認、出来たら削除
-        try:
-            f = open('./num.txt', mode='r')
-            last_tweet_num = f.read()
-            f.close()
-            last_tweet_num = str(int(last_tweet_num)+1)
-            f = open('./num.txt', mode='w')
-            f.write(last_tweet_num)
-            f.close()
-            api_JA.update_status(last_tweet_num)         
-                
+        if before_context in before_tweet:
+                print("same_content")
+        else:
+            try:
+                with open('./test.txt', mode='a+') as f:
+                    f.write(context)
+                    api_JA.update_status(context)
+                    
 
-        except FileNotFoundError:
-            f = open('./num.txt', mode='w+')
-            f.write("1")
-            f.close()
-            api_JA.update_status("1回")
-
-
-        api_JA.update_status(context)
+            except FileNotFoundError:
+                print("test.txtが存在しない、一度コード内の上部で生成しているため、errorはないはず")
 
     # total=total_context
 
 
 def main():
-    # schedule.every(10).minutes.do(job)
-    schedule.every(1).seconds.do(job)
+    schedule.every(10).minutes.do(job)
+    # schedule.every(1).seconds.do(job)
     # schedule.every(3).hours.do(job)
 
     while True:
