@@ -68,7 +68,6 @@ def job():
     train_url = http+str(api_key)
     url = requests.get(train_url)
     text = url.text
-    total_context=""
     context=""
     before_context=""
 
@@ -140,36 +139,24 @@ def job():
             context=""
 
         before_context=context
-        
+
+        #25文字以上なら遅延情報あり
         if (25 < len(data[i]['odpt:trainInformationText']['ja'])):
             if data[i]['owl:sameAs'] in dic:
                 context += dic[data[i]['owl:sameAs']] + '：' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
-                # total_context += dic[data[i]['owl:sameAs']] + '  ' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
             else:
                 context += data[i]['owl:sameAs'] + '：' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
-                # total_context += data[i]['owl:sameAs'] + '  ' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
 
-        #total_contextに追加しているのは以前と内容が同じか判断するため
-        else:
-            if data[i]['owl:sameAs'] in dic:
-                total_context += dic[data[i]['owl:sameAs']] + '：' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
-            else:
-                total_context += data[i]['owl:sameAs'] + '：' + data[i]['odpt:trainInformationText']['ja'] + "\n" 
-
+        # test.txtが無事に動作するか以下のコメントアウト内で確認
+        # jp = ["あ","い","う","え","お","か","き","く","け","こ","さ","し","す","せ","そ","た","ち","つ","て","と","な","に","ぬ","ね","の","は","ひ","ふ","へ","ほ","ま","み","む","め","も","や","ゆ","よ","ら","り","る","れ","ろ","わ","を","ん"]
+        # context+=jp[random.randint(0,len(jp)-1)]
 
     if context=="":
         print("No changes")
-        # print(total_context)
         # api_JA.update_status("if分の方",context)
         # api_JA.update_status("else",random.random())
 
-    #以前の投稿と同じ内容か判断
-    # elif total == total_context:
-    #     num+=1
-    #     api_JA.update_status(str(num)+"以前の遅延状態が継続しています")
-
     else:
-        # print(total_context)
         #ツイートの実行
         # api_JA.update_status("else",random.random())
 
