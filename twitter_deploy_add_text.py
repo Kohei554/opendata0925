@@ -61,6 +61,8 @@ def job():
     lack_dic={'odpt.TrainInformation:Keikyu':"京急線", 'odpt.TrainInformation:Keio':"京王線・井の頭線", 'odpt.TrainInformation:Seibu':"西武鉄道各線", 'odpt.TrainInformation:Keisei':"京成線"}
     dic.update(lack_dic)
 
+    IBM_url="https://api.jp-tok.language-translator.watson.cloud.ibm.com/instances/1f098ad2-36bc-4be2-9233-279c270a3e89"
+
 
 
     #tweet内容のopendataのjsonデータをから取り出し
