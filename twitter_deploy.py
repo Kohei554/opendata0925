@@ -12,6 +12,7 @@ import create_dict
 import get_before_tweet
 import get_before_tweet_en
 import one_line
+import one_line_en
 import translate
 
 
@@ -81,17 +82,18 @@ def job():
             if before_context in before_tweet:
                 print("same_content")
                 with open('./test.txt', mode='a+') as f:
-                        f.write(before_context)
+                    f.write(before_context)
 
             else:
                 try:
                     with open('./test.txt', mode='a+') as f:
+                        print("tweet\n")
                         f.write(before_context)
                         api_JA.update_status(before_context)
-                    
 
                 except FileNotFoundError:
                     print("test.txtが存在しない、一度コード内の上部で生成しているため、errorはないはず")
+
             context=""
 
         if (len(context_en) > 280 ):
@@ -99,36 +101,35 @@ def job():
             if before_context_en in before_tweet_en:
                 print("same_content")
                 with open('./test_en.txt', mode='a+') as f:
-                        f.write(before_context_en)
+                    f.write(before_context_en)
 
             else:
                 try:
                     with open('./test_en.txt', mode='a+') as f:
+                        print("tweet\n")
                         f.write(before_context_en)
                         api_EN.update_status(before_context_en)
                     
 
                 except FileNotFoundError:
                     print("test.txtが存在しない、一度コード内の上部で生成しているため、errorはないはず")
-            context_en=""
 
+            context_en=""
 
         before_context=context
 
         before_context_en=context_en
 
+        #print(one_line_en.create_one_line(re.findall('odpt.TrainInformation:(.*)', data[i]['owl:sameAs']).pop(), translate.translate(data[i]['odpt:trainInformationText']['ja'])))
+
         #25文字以上なら遅延情報あり
         if (25 < len(data[i]['odpt:trainInformationText']['ja'])):
-            context_en += data[i]['owl:sameAs'] + '：' + translate.translate(one_line.create_one_line(data[i]['odpt:trainInformationText']['ja'])) + "\n" 
-
+            context_en += one_line_en.create_one_line(re.findall('odpt.TrainInformation:(.*)', data[i]['owl:sameAs']).pop(), translate.translate(data[i]['odpt:trainInformationText']['ja']))
             if data[i]['owl:sameAs'] in dic:
-                context += dic[data[i]['owl:sameAs']] + '：' + one_line.create_one_line(data[i]['odpt:trainInformationText']['ja']) + "\n" 
+                context += one_line.create_one_line(dic[data[i]['owl:sameAs']], data[i]['odpt:trainInformationText']['ja'])
             else:
-                context += data[i]['owl:sameAs'] + '：' + one_line.create_one_line(data[i]['odpt:trainInformationText']['ja']) + "\n" 
+                context += one_line.create_one_line(data[i]['owl:sameAs'], data[i]['odpt:trainInformationText']['ja'])
 
-        # test.txtが無事に動作するか以下のコメントアウト内で確認
-        # jp = ["あ","い","う","え","お","か","き","く","け","こ","さ","し","す","せ","そ","た","ち","つ","て","と","な","に","ぬ","ね","の","は","ひ","ふ","へ","ほ","ま","み","む","め","も","や","ゆ","よ","ら","り","る","れ","ろ","わ","を","ん"]
-        # context+=jp[random.randint(0,len(jp)-1)]
 
     if context=="":
         print("No changes")
@@ -144,6 +145,7 @@ def job():
         else:
             try:
                 with open('./test.txt', mode='a+') as f:
+                    print("tweet\n")
                     f.write(context)
                     api_JA.update_status(context)
                     
@@ -160,6 +162,7 @@ def job():
         else:
             try:
                 with open('./test_en.txt', mode='a+') as f:
+                    print("tweet\n")
                     f.write(context_en)
                     api_JA.update_status(context_en)
                     

@@ -39,4 +39,4 @@ def translate(text):
     return json.loads(json.dumps(translation))["translations"][0]["translation"]
 
 if __name__ == '__main__':
-    print(translate("テスト")) 
+    print(translate("write a mail")) 
