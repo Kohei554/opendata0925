@@ -76,11 +76,13 @@ def job():
     #データの取り出し
     for i in range(len(data)):
 
-
         if (len(context) > 140 ):
             #もし、以前tweetした内容と同じ場合はifでかき消されるので、num.txtの利用などで工夫して回数追加を必要がある
             if before_context in before_tweet:
                 print("same_content")
+                with open('./test.txt', mode='a+') as f:
+                        f.write(before_context)
+
             else:
                 try:
                     with open('./test.txt', mode='a+') as f:
@@ -96,6 +98,9 @@ def job():
             #もし、以前tweetした内容と同じ場合はifでかき消されるので、num.txtの利用などで工夫して回数追加を必要がある
             if before_context_en in before_tweet_en:
                 print("same_content")
+                with open('./test_en.txt', mode='a+') as f:
+                        f.write(before_context_en)
+
             else:
                 try:
                     with open('./test_en.txt', mode='a+') as f:
@@ -127,14 +132,15 @@ def job():
 
     if context=="":
         print("No changes")
-        # api_JA.update_status("else",random.random())
 
     else:
         #ツイートの実行
-        # api_JA.update_status("else",random.random())
         #日本語版の処理
         if before_context in before_tweet:
                 print("same_content")
+                with open('./test.txt', mode='a+') as f:
+                    f.write(context)
+
         else:
             try:
                 with open('./test.txt', mode='a+') as f:
@@ -148,6 +154,9 @@ def job():
         #英語版の処理
         if before_context_en in before_tweet_en:
                 print("same_content")
+                with open('./test_en.txt', mode='a+') as f:
+                    f.write(context_en)
+
         else:
             try:
                 with open('./test_en.txt', mode='a+') as f:
