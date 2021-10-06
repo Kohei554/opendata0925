@@ -40,7 +40,7 @@ def post(before_tweet,before_tweet_en):
     auth_EN.set_access_token(ACCESS_KEY_EN, ACCESS_TOKEN_EN)
     api_EN = tweepy.API(auth_EN)
     
-    tweet_JA, tweeet_EN = get_tweet_content_list.get_delay_info_140_280()
+    tweet_JA, tweet_EN = get_tweet_content_list.get_delay_info_140_280()
 
     for i in tweet_JA:
         #日本語版の処理
@@ -53,7 +53,7 @@ def post(before_tweet,before_tweet_en):
         else:
             try:
                 with open('./test.txt', mode='a+') as f:
-                    print("tweet\n")
+                    print("tweet_JA\n")
                     f.write(i)
                     api_JA.update_status(i)
 
@@ -61,9 +61,9 @@ def post(before_tweet,before_tweet_en):
                 print("test.txtが存在しない、一度コード内の上部で生成しているため、errorはないはず")
 
         #英語版の処理
-    for i in tweeet_EN:
-        #日本語版の処理
+    for i in tweet_EN:
         if i in before_tweet_en:
+            print(i)
             with open('./test_en.txt', mode='a+') as f:
                 try:
                     f.write(i)                        
@@ -72,9 +72,9 @@ def post(before_tweet,before_tweet_en):
         else:
             try:
                 with open('./test_en.txt', mode='a+') as f:
-                    print("tweet\n")
+                    print("tweet_EN\n")
                     f.write(i)
-                    api_JA.update_status(i)
+                    api_EN.update_status(i)
 
             except FileNotFoundError:
                 print("test_en.txtが存在しない、一度コード内の上部で生成しているため、errorはないはず")

@@ -45,10 +45,10 @@ def get_delay_info_140_280():
     over25_content=[]
     #over25_train、over25_contentを合体させ、正規化したリスト
     tweet_uncomplete_JA=[]
-    tweet_uncomplete_EA=[]
+    tweet_uncomplete_EN=[]
     #140_280文字以内の正規化した文を返す集合
     tweet_JA=set()
-    tweet_EA=set()
+    tweet_EN=set()
 
 
     data = json.loads(text)
@@ -60,15 +60,16 @@ def get_delay_info_140_280():
             over25_train.append(data[i]['owl:sameAs'])
             over25_content.append(data[i]['odpt:trainInformationText']['ja'])
 
+
     #遅延情報のみのリストをforにかける->投稿するきれいな文章のみの作成
     for i in range(len(over25_content)):
-        tweet_uncomplete_EA.append(one_line_en.create_one_line(re.findall('odpt.TrainInformation:(.*)', over25_train[i]).pop(), translate.translate(over25_content[i])))
+        tweet_uncomplete_EN.append(one_line_en.create_one_line( re.findall('odpt.TrainInformation:(.*)', over25_train[i]).pop(), translate.translate(over25_content[i])))
         if over25_train[i] in dic:
             tweet_uncomplete_JA.append(one_line.create_one_line(dic[over25_train[i]], over25_content[i]))
         else:
             tweet_uncomplete_JA.append(one_line.create_one_line(over25_train[i], over25_content[i]))
 
-    #日本語の140文字に連結した文章をリストに格納し、返す
+    #日本語の140文字以内で、連結した文章をリストに格納し、返す
     for i in tweet_uncomplete_JA:
         before_context+=context
         context+=i
@@ -84,23 +85,25 @@ def get_delay_info_140_280():
         if not context=="":
             tweet_JA.add(context)
 
-    #英語の280文字に連結した文章をリストに格納し、返す
-    for i in tweet_uncomplete_EA:
+
+
+    #英語の280文字以内で、連結した文章をリストに格納し、返す
+    for i in tweet_uncomplete_EN:
         before_context_en+=context_en
         context_en+=i
         if len(context)>280:
-            tweet_JA.add(before_context_en)
+            tweet_EN.add(before_context_en)
             context_en=i
 
-    #for文を抜けた後にcontextにまだ残ってる中身確認
-    if len(context)>280:
-        if not before_context=="":
-            tweet_JA.add(before_context)
+    #for文を抜けた後に英語のcontext_enにまだ残ってる中身確認
+    if len(context_en)>280:
+        if not before_context_en=="":
+            tweet_EN.add(before_context_en)
     else:
-        if not context=="":
-            tweet_JA.add(context)
+        if not context_en=="":
+            tweet_EN.add(context_en)
     
-    return tweet_JA,tweet_EA
+    return tweet_JA,tweet_EN
 
 if __name__ == '__main__':
     print(get_delay_info_140_280()) 
