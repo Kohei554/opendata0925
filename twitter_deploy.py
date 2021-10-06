@@ -73,8 +73,8 @@ def job():
     
 
 def main():
-    # schedule.every(10).minutes.do(job)
-    schedule.every(5).seconds.do(job)
+    schedule.every(10).minutes.do(job)
+    # schedule.every(5).seconds.do(job)
     # schedule.every(3).hours.do(job)
 
     while True:
