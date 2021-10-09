@@ -1,53 +1,48 @@
-# Name（リポジトリ/プロジェクト/OSSなどの名前）
+# 東京遅延情報Twitterbot
 
-分かりやすくてカッコイイ名前をつける（今回は"hoge"という名前をつける）
-
-"hoge"が何かを簡潔に紹介する
-
-# DEMO
-
-"hoge"の魅力が直感的に伝えわるデモ動画や図解を載せる
+[Twitterアカウント](https://twitter.com/chienjyouhou)
+[Twitter Account](https://twitter.com/tokyotraindelay)
 
 # Features
-
-"hoge"のセールスポイントや差別化などを説明する
+電車の有益な遅延情報を提供するTwitterbotです。以下のサイトから、より詳細な情報と乗降人数を確認でき、コロナ禍に着目したWebアプリになっています。
+This is a Twitter bot providing information about train delay in Tokyo. Please visit below website for more information.
 
 # Requirement
 
-"hoge"を動かすのに必要なライブラリなどを列挙する
-
-* huga 3.5.2
-* hogehuga 1.0.2
-
-# Installation
-
-Requirementで列挙したライブラリなどのインストール方法を説明する
-
-```bash
-pip install huga_package
-```
-
-# Usage
-
-DEMOの実行方法など、"hoge"の基本的な使い方を説明する
-
-```bash
-git clone https://github.com/hoge/~
-cd examples
-python demo.py
-```
+certifi==2021.5.30
+charset-normalizer==2.0.6
+ibm-cloud-sdk-core==3.11.3
+ibm-watson==5.3.0
+idna==3.2
+oauthlib==3.1.1
+PyJWT==2.1.0
+PySocks==1.7.1
+python-dateutil==2.8.2
+python-dotenv==0.19.0
+requests==2.26.0
+requests-oauthlib==1.3.0
+schedule==1.1.0
+six==1.16.0
+style==1.1.0
+tweepy==3.10.0
+update==0.0.1
+urllib3==1.26.7
+websocket-client==1.1.0
 
 # Note
 
-注意点などがあれば書く
+tweetの内容が重複する可能性があります
+The content of the tweet may be duplicated
 
 # Author
-
-作成情報を列挙する
-
-* 作成者
-* 所属
-* E-mail
+日本語
+* 作成者：Chanon Limpipolpaibul、堀口紘平、鈴木
+* 所属：東洋大学情報連携学部情報連携学科
+* Eメール：tokyochienjyouhou@gmail.com
+English
+* Created by: Chanon Limpipolpaibul, Kohei Horiguchi, Suzuki
+* Affiliation: Toyo University Faculty of Information Technology Department of Information Technology
+* Email: tokyotraindelay@gmail.com
 
 # License
 ライセンスを明示する
@@ -56,64 +51,4 @@ python demo.py
 
 社内向けなら社外秘であることを明示してる
 
-"hoge" is Confidential.
-
-# Name（リポジトリ/プロジェクト/OSSなどの名前）
- 
-分かりやすくてカッコイイ名前をつける（今回は"hoge"という名前をつける）
- 
-"hoge"が何かを簡潔に紹介する
- 
-# DEMO
- 
-"hoge"の魅力が直感的に伝えわるデモ動画や図解を載せる
- 
-# Features
- 
-"hoge"のセールスポイントや差別化などを説明する
- 
-# Requirement
- 
-"hoge"を動かすのに必要なライブラリなどを列挙する
- 
-* huga 3.5.2
-* hogehuga 1.0.2
- 
-# Installation
- 
-Requirementで列挙したライブラリなどのインストール方法を説明する
- 
-```bash
-pip install huga_package
-```
- 
-# Usage
- 
-DEMOの実行方法など、"hoge"の基本的な使い方を説明する
- 
-```bash
-git clone https://github.com/hoge/~
-cd examples
-python demo.py
-```
- 
-# Note
- 
-注意点などがあれば書く
- 
-# Author
- 
-作成情報を列挙する
- 
-* 作成者
-* 所属
-* E-mail
- 
-# License
-ライセンスを明示する
- 
-"hoge" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
- 
-社内向けなら社外秘であることを明示してる
- 
 "hoge" is Confidential.
