@@ -42,18 +42,18 @@ def post(before_tweet,before_tweet_en):
     
     tweet_JA, tweet_EN = get_tweet_content_list.get_delay_info_140_280()
 
+    #日本語版の処理
     for i in tweet_JA:
-        #日本語版の処理
         if i in before_tweet:
             print(i)
-            with open('./test.txt', mode='a+') as f:
+            with open('./test.txt', mode='a+', encoding="shift-jis") as f:
                 try:
                     f.write(i)                        
                 except FileNotFoundError:
                     print("test.txtが存在しない、一度コード内の上部で生成しているため、errorはないはず")
         else:
             try:
-                with open('./test.txt', mode='a+') as f:
+                with open('./test.txt', mode='a+', encoding="shift-jis") as f:
                     print("tweet_JA\n")
                     f.write(i)
                     api_JA.update_status(i)

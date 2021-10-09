@@ -5,7 +5,7 @@ def get_before_tweet():
     last_line=""
     last_before_line=""
     try:
-        f = open('./test.txt', mode='r')
+        f = open('./test.txt', mode='r', encoding="shift-jis")
         while True:
             line=f.readline()
             if line:
@@ -37,7 +37,7 @@ def get_before_tweet():
         pass
 
     #test.txtの初期化、リセット
-    f = open('./test.txt', mode='w+')
+    f = open('./test.txt', mode='w+', encoding="shift-jis")
     f.write("")
     f.close()
     return before_tweet
