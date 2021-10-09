@@ -45,6 +45,7 @@ def post(before_tweet,before_tweet_en):
     for i in tweet_JA:
         #日本語版の処理
         if i in before_tweet:
+            print(i)
             with open('./test.txt', mode='a+') as f:
                 try:
                     f.write(i)                        

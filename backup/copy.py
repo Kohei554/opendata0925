@@ -1,3 +1,4 @@
+#moduleなしで全てを動かせるプログラム
 import json
 import requests
 import tweepy

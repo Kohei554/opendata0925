@@ -24,7 +24,7 @@ def get_before_tweet_en():
                         before_tweet.add(last_before_line)
 
                 #多分下のelifはいらない->elifの処理は一切行われないはず
-                elif len(last_line)>140:
+                elif len(last_line)>280:
                     before_tweet.add(last_before_line)
                     if not last_line=="" or last_line=="\n":
                         before_tweet.add(last_line)
