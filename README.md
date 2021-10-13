@@ -38,11 +38,11 @@ The content of the tweet may be duplicated
 # Author
 
 日本語
-* 作成者：Chanon Limpipolpaibul、堀口紘平、鈴木
+* 作成者：Chanon Limpipolpaibul、堀口紘平、押久保秀英
 * 所属：東洋大学情報連携学部情報連携学科
 * Eメール：tokyochienjyouhou@gmail.com
 English\
-* Created by: Chanon Limpipolpaibul, Kohei Horiguchi, Suzuki
+* Created by: Chanon Limpipolpaibul, Kohei Horiguchi, Shuei Oshikubo
 * Affiliation: Toyo University Faculty of Information Technology Department of Information Technology
 * Email: tokyotraindelay@gmail.com
 
